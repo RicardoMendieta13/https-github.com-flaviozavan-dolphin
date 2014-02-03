@@ -6,6 +6,7 @@
 #ifdef _WIN32
 #include "VideoBackends/D3D/VideoBackend.h"
 #endif
+#include "VideoBackends/NULL/VideoBackend.h"
 #include "VideoBackends/OGL/VideoBackend.h"
 #include "VideoBackends/Software/VideoBackend.h"
 
@@ -36,9 +37,9 @@ static bool IsGteVista()
 
 void VideoBackend::PopulateList()
 {
-	VideoBackend* backends[4] = { nullptr };
+	VideoBackend* backends[5] = { nullptr };
 
-	// OGL > D3D11 > SW
+	// OGL > D3D11 > SW > Null
 #if !defined(USE_GLES) || USE_GLES3
 	g_available_video_backends.push_back(backends[0] = new OGL::VideoBackend);
 #endif
@@ -47,6 +48,7 @@ void VideoBackend::PopulateList()
 		g_available_video_backends.push_back(backends[1] = new DX11::VideoBackend);
 #endif
 	g_available_video_backends.push_back(backends[3] = new SW::VideoSoftware);
+	g_available_video_backends.push_back(backends[4] = new Null::VideoBackend);
 
 	for (VideoBackend* backend : backends)
 	{
